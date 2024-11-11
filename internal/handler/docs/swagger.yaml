@@ -1,0 +1,245 @@
+basePath: /api
+definitions:
+  o_clinic_internal_domain.Doctor:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      hourly_rate:
+        type: number
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      specialization:
+        type: string
+      working_days:
+        items:
+          type: string
+        type: array
+    type: object
+  o_clinic_internal_domain.NewDoctor:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      hourly_rate:
+        type: number
+      last_name:
+        type: string
+      phone:
+        type: string
+      specialization:
+        type: string
+      working_days:
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: omarsabra509@gmail.com
+    name: API Support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: O-Clinic API
+  version: "1.0"
+paths:
+  /doctor:
+    get:
+      consumes:
+      - application/json
+      description: get doctors
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Take
+        in: query
+        name: take
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/o_clinic_internal_domain.Doctor'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List doctors
+      tags:
+      - doctor
+    post:
+      consumes:
+      - application/json
+      description: create doctor
+      parameters:
+      - description: Doctor
+        in: body
+        name: doctor
+        required: true
+        schema:
+          $ref: '#/definitions/o_clinic_internal_domain.NewDoctor'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create doctor
+      tags:
+      - doctor
+  /doctor/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete doctor
+      parameters:
+      - description: Doctor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete doctor
+      tags:
+      - doctor
+    get:
+      consumes:
+      - application/json
+      description: get doctor by id
+      parameters:
+      - description: Doctor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/o_clinic_internal_domain.Doctor'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get doctor by id
+      tags:
+      - doctor
+    put:
+      consumes:
+      - application/json
+      description: update doctor
+      parameters:
+      - description: Doctor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Doctor
+        in: body
+        name: doctor
+        required: true
+        schema:
+          $ref: '#/definitions/o_clinic_internal_domain.Doctor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update doctor
+      tags:
+      - doctor
+swagger: "2.0"
