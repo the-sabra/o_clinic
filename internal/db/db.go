@@ -11,7 +11,7 @@ import (
 type Storage struct {
 	DB *sql.DB // changed line
 }
- 
+
 // NewStorage creates a new Storage instance and connects to the database.
 func NewStorage(connString string) (*Storage, error) {
 	db, err := sql.Open("sqlserver", connString)
@@ -19,7 +19,7 @@ func NewStorage(connString string) (*Storage, error) {
 		return nil, err
 	}
 	// defer db.Close()
-	 
+
 	err = db.Ping()
 	if err != nil {
 		return nil, err

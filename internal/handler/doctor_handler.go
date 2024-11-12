@@ -13,21 +13,21 @@ import (
 
 // DoctorService represents the service for managing doctors.
 type DoctorService interface {
-    CreateDoctor(ctx context.Context, doctor *domain.NewDoctor) (int64, error)
-    GetDoctor(ctx context.Context, id int64) (*domain.Doctor, error)
-    GetAllPagination(ctx context.Context, limit, offset int) ([]*domain.Doctor, error)
-    UpdateDoctor(ctx context.Context, doctor *domain.Doctor) error
-    DeleteDoctor(ctx context.Context, id int64) error
+	CreateDoctor(ctx context.Context, doctor *domain.NewDoctor) (int64, error)
+	GetDoctor(ctx context.Context, id int64) (*domain.Doctor, error)
+	GetAllPagination(ctx context.Context, limit, offset int) ([]*domain.Doctor, error)
+	UpdateDoctor(ctx context.Context, doctor *domain.Doctor) error
+	DeleteDoctor(ctx context.Context, id int64) error
 }
 
 // DoctorHandler represents the HTTP handler for doctor.
 type DoctorHandler struct {
-    service DoctorService
+	service DoctorService
 }
 
 // NewDoctorHandler creates a new doctor handler.
 func NewDoctorHandler(service DoctorService) *DoctorHandler {
-    return &DoctorHandler{service: service}
+	return &DoctorHandler{service: service}
 }
 
 // Create godoc
@@ -42,19 +42,20 @@ func NewDoctorHandler(service DoctorService) *DoctorHandler {
 // @Failure      500  {object}  map[string]string
 // @Router       /doctor [post]
 func (h *DoctorHandler) Create(c echo.Context) error {
-    var doctor domain.NewDoctor
-    if err := c.Bind(&doctor); err != nil {
-        return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
-    }
+	var doctor domain.NewDoctor
+	if err := c.Bind(&doctor); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
 
-    id, err := h.service.CreateDoctor(c.Request().Context(), &doctor)
-    fmt.Println("id", id) 
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
+	id, err := h.service.CreateDoctor(c.Request().Context(), &doctor)
+	fmt.Println("id", id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
 
-    return c.JSON(http.StatusCreated, map[string]int64{"id": id})
+	return c.JSON(http.StatusCreated, map[string]int64{"id": id})
 }
+
 // GetByID godoc
 // @Summary      Get doctor by id
 // @Description  get doctor by id
@@ -68,22 +69,22 @@ func (h *DoctorHandler) Create(c echo.Context) error {
 // @Failure      500  {object}  map[string]string
 // @Router       /doctor/{id} [get]
 func (h *DoctorHandler) GetByID(c echo.Context) error {
-    id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-    if err != nil {
-        return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
-    }
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
+	}
 
-    doctor, err := h.service.GetDoctor(c.Request().Context(), id)
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
+	doctor, err := h.service.GetDoctor(c.Request().Context(), id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
 
-    if doctor == nil {
-        return c.JSON(http.StatusNotFound, map[string]string{"error": "doctor not found"})
-    }
+	if doctor == nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "doctor not found"})
+	}
 
-    return c.JSON(http.StatusOK, doctor)
-} 
+	return c.JSON(http.StatusOK, doctor)
+}
 
 // GetAllPagination godoc
 // @Summary      List doctors
@@ -98,23 +99,23 @@ func (h *DoctorHandler) GetByID(c echo.Context) error {
 // @Param        take query int true "Take"
 // @Router       /doctor [get]
 func (h *DoctorHandler) GetAllPagination(c echo.Context) error {
-     page , err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
-        if err != nil {
-            return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid page"})
-        } 
-    take , err := strconv.ParseInt(c.QueryParam("take"), 10, 64)
-        if err != nil {
-            return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid take"})
-        }
-    offset := (page - 1) * take
-    limit := take
-    doctors, err := h.service.GetAllPagination(c.Request().Context(), int(limit), int(offset))
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
+	page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid page"})
+	}
+	take, err := strconv.ParseInt(c.QueryParam("take"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid take"})
+	}
+	offset := (page - 1) * take
+	limit := take
+	doctors, err := h.service.GetAllPagination(c.Request().Context(), int(limit), int(offset))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
 
-    return c.JSON(http.StatusOK, doctors) 
-}  
+	return c.JSON(http.StatusOK, doctors)
+}
 
 // UpdateDoctor godoc
 // @Summary      Update doctor
@@ -128,25 +129,24 @@ func (h *DoctorHandler) GetAllPagination(c echo.Context) error {
 // @Failure      400  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
 // @Router       /doctor/{id} [put]
-func(h * DoctorHandler) UpdateDoctor(c echo.Context) error {
-    fmt.Println("ID", c.Param("id"))
-    doctorID, err := strconv.ParseInt(c.Param("id"), 10, 64)
-    if err != nil {
-        return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
-    }
-    var doctor domain.Doctor
-    if err := c.Bind(&doctor); err != nil {
-        return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
-    }
-    doctor.ID = doctorID
-    err = h.service.UpdateDoctor(c.Request().Context(), &doctor)
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
-    return c.JSON(http.StatusOK, map[string]string{"message": "doctor updated successfully"})
+func (h *DoctorHandler) UpdateDoctor(c echo.Context) error {
+	fmt.Println("ID", c.Param("id"))
+	doctorID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
+	}
+	var doctor domain.Doctor
+	if err := c.Bind(&doctor); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	doctor.ID = doctorID
+	err = h.service.UpdateDoctor(c.Request().Context(), &doctor)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]string{"message": "doctor updated successfully"})
 }
 
- 
 // DeleteDoctor  godoc
 // @Summary      Delete doctor
 // @Description  delete doctor
@@ -159,15 +159,15 @@ func(h * DoctorHandler) UpdateDoctor(c echo.Context) error {
 // @Failure      500  {object}  map[string]string
 // @Router       /doctor/{id} [delete]
 func (h *DoctorHandler) DeleteDoctor(c echo.Context) error {
-    id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-    if err != nil {
-        return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
-    }
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
+	}
 
-    err = h.service.DeleteDoctor(c.Request().Context(), id)
-    if err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
+	err = h.service.DeleteDoctor(c.Request().Context(), id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
 
-    return c.JSON(http.StatusOK, map[string]string{"message": "doctor deleted successfully"})
+	return c.JSON(http.StatusOK, map[string]string{"message": "doctor deleted successfully"})
 }

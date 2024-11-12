@@ -42,6 +42,40 @@ definitions:
           type: string
         type: array
     type: object
+  o_clinic_internal_domain.NewPatient:
+    properties:
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
+  o_clinic_internal_domain.Patient:
+    properties:
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -242,4 +276,186 @@ paths:
       summary: Update doctor
       tags:
       - doctor
+  /patient:
+    get:
+      consumes:
+      - application/json
+      description: get all Patient with pagination
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Take
+        in: query
+        name: take
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/o_clinic_internal_domain.Patient'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all Patient with pagination
+      tags:
+      - Patient
+    post:
+      consumes:
+      - application/json
+      description: create Patient
+      parameters:
+      - description: Patient
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/o_clinic_internal_domain.NewPatient'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create Patient
+      tags:
+      - Patient
+  /patient/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete Patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete Patient
+      tags:
+      - Patient
+    get:
+      consumes:
+      - application/json
+      description: get Patient by id
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/o_clinic_internal_domain.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Patient by id
+      tags:
+      - Patient
+    put:
+      consumes:
+      - application/json
+      description: update Patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Patient
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/o_clinic_internal_domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update Patient
+      tags:
+      - Patient
 swagger: "2.0"

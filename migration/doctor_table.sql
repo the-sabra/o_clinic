@@ -1,4 +1,4 @@
--- Active: 1731001070739@@127.0.0.1@1433@o_clinic_DB
+-- Active: 1731337083407@@db9994.public.databaseasp.net@1433@db9994
 
 
 CREATE TABLE  doctor(

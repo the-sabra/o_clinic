@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"o_clinic/internal/db"
 	"o_clinic/pkg/initializer/doctor"
+	"o_clinic/pkg/initializer/patient"
 
 	"github.com/labstack/echo/v4"
 )
- 
+
 // RegisterRoutes registers all the routes for the API.
 func RegisterRoutes(e *echo.Echo, db  *db.Storage) {
 	e.GET("/", func(c echo.Context) error { 
@@ -19,5 +20,6 @@ func RegisterRoutes(e *echo.Echo, db  *db.Storage) {
 	
 	
 	doctor.Initialize(api, db)
+	patient.Initialize(api, db)
 } 
 
