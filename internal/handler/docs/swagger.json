@@ -13,7 +13,6 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
     "basePath": "/api",
     "paths": {
         "/doctor": {
@@ -668,7 +667,7 @@
                 "created_at": {
                     "type": "string"
                 },
-                "date_of_birth": {
+                "dob": {
                     "type": "string"
                 },
                 "email": {

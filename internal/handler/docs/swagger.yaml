@@ -61,7 +61,7 @@ definitions:
     properties:
       created_at:
         type: string
-      date_of_birth:
+      dob:
         type: string
       email:
         type: string
@@ -76,7 +76,6 @@ definitions:
       phone:
         type: string
     type: object
-host: localhost:8080
 info:
   contact:
     email: omarsabra509@gmail.com
