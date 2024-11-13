@@ -9,7 +9,7 @@ o_clinic is a Go-based application designed to manage clinic operations, includi
 - [Configuration](#configuration)
 - [Contributing](#contributing)
 - [License](#license)
-
+- [ER_Diagram](#ERDiagram)
 ## Installation
 
 1. Clone the repository:
@@ -49,6 +49,52 @@ The application uses environment variables for configuration. These variables ca
 - `PORT`: The port on which the server will run.
 - `DBConnString`: The connection string for the database.
 
+## ERDiagram 
+```mermaid
+erDiagram
+    DOCTORS {
+        int doctor_id PK
+        varchar first_name
+        varchar last_name
+        varchar specialization
+        varchar email
+        varchar phone
+        decimal hourly_rate
+        timestamp created_at
+    }
+
+    PATIENTS {
+        int patient_id PK
+        varchar first_name
+        varchar last_name
+        date date_of_birth
+        enum gender
+        varchar email
+        varchar phone
+        timestamp created_at
+    }
+
+    APPOINTMENTS {
+        int appointment_id PK
+        int doctor_id FK
+        int patient_id FK
+        date appointment_date
+        time appointment_time
+        enum status
+        text notes
+        timestamp created_at
+    }
+
+   WORKING_DAYS{
+     int doctor_id PK
+     varchar name PK
+   }  
+
+
+    DOCTORS ||--o{ APPOINTMENTS : "has many"
+    DOCTORS ||--o{ WORKING_DAYS : "has many"
+    PATIENTS ||--o{ APPOINTMENTS : "has many"
+```
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any changes.
@@ -56,6 +102,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
 ## Swagger Documentation
 
