@@ -42,7 +42,7 @@ const (
 			p.phone
 		FROM patient p
 		ORDER BY p.created_at
-		OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;`
+		OFFSET @p1 ROWS FETCH NEXT @p2 ROWS ONLY;`
 	
 	// DeletePatient is the SQL query to delete a patient by patient_id.
 	DeletePatient = `
