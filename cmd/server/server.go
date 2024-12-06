@@ -25,11 +25,15 @@ func NewServer() *Server {
 }
 
 // ListenAndServe starts the server and listens on the configured port.
-
 func (s *Server) ListenAndServe() error {
 	config := utils.NewConfig()
 	e := echo.New()
-	 
+	
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	})) 
+	
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	e.Validator = &utils.Validator{Instance: validator.New()}
