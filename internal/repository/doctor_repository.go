@@ -48,6 +48,8 @@ func (r *DoctorRepository) Create(ctx context.Context, doctor *domain.NewDoctor)
 // GetByID retrieves a doctor by its ID.
 func (r *DoctorRepository) GetByID(ctx context.Context, id int64) (*domain.Doctor, error) {
 	doctor := &domain.Doctor{}
+	var workingDaysStr string
+	
 	err := r.DB.QueryRowContext(ctx, queries.GetDoctorByID, id).Scan(
 		&doctor.ID,
 		&doctor.FirstName,
@@ -56,8 +58,8 @@ func (r *DoctorRepository) GetByID(ctx context.Context, id int64) (*domain.Docto
 		&doctor.Email,
 		&doctor.Phone,
 		&doctor.HourlyRate,
-		&doctor.WorkingDays,
 		&doctor.CreatedAt,
+		&workingDaysStr,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -65,6 +67,13 @@ func (r *DoctorRepository) GetByID(ctx context.Context, id int64) (*domain.Docto
 		}
 		return nil, err
 	}
+	
+	if workingDaysStr != "" {
+			doctor.WorkingDays = strings.Split(workingDaysStr, ",")
+		} else {
+			doctor.WorkingDays = []string{}
+		} 
+
 	return doctor, nil
 }
 

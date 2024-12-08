@@ -14,9 +14,20 @@ const (
     
     // GetDoctorByID is the SQL query to select a doctor by doctor_id.
     GetDoctorByID = `
-        SELECT doctor_id, first_name, last_name, specialization, email, phone, hourly_rate, working_days, created_at
-        FROM doctor
-        WHERE doctor_id = @p1`
+    SELECT 
+        d.doctor_id, 
+        d.first_name, 
+        d.last_name, 
+        d.specialization, 
+        d.email, 
+        d.phone, 
+        d.hourly_rate,
+        d.created_at,       
+        STRING_AGG(w.day_of_week, ',') AS working_days
+    FROM doctor d
+    LEFT JOIN working_days w ON d.doctor_id = w.doctor_id
+    where d.doctor_id = 3
+    GROUP BY d.doctor_id , d.first_name, d.last_name , d.specialization , d.email , d.phone , d.hourly_rate, d.created_at;`
 
     // ListDoctors is the SQL query to select all doctors.
     ListDoctors = `
